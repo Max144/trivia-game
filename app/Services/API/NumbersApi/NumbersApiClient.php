@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\API\NumbersApi;
 
-use App\Exceptions\TriviaApiParseException;
-use App\Exceptions\TriviaApiWrongTypeException;
+use App\Exceptions\TriviaGameApiParseException;
+use App\Exceptions\TriviaGameApiWrongTypeException;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\DateNumbersApiQuestion;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\MathNumbersApiQuestion;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\NumbersApiQuestionAbstract;
@@ -31,12 +31,12 @@ class NumbersApiClient
     ];
 
     /**
-     * @throws TriviaApiWrongTypeException
+     * @throws TriviaGameApiWrongTypeException
      */
     protected function getNewQuestionData(string $type)
     {
         if (!in_array($type, self::QUESTION_TYPES)) {
-            throw new TriviaApiWrongTypeException();
+            throw new TriviaGameApiWrongTypeException();
         }
 
         $response = Http::get("http://numbersapi.com/random/{$type}?json=1&fragment=1");
@@ -45,7 +45,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaApiParseException|TriviaApiWrongTypeException
+     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
      */
     public function getNewQuestion(string $type)
     {
@@ -56,7 +56,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaApiParseException|TriviaApiWrongTypeException
+     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
      */
     public function getNewTriviaQuestion(): NumbersApiQuestionAbstract
     {
@@ -64,7 +64,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaApiParseException|TriviaApiWrongTypeException
+     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
      */
     public function getNewMathQuestion(): NumbersApiQuestionAbstract
     {
@@ -72,7 +72,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaApiParseException|TriviaApiWrongTypeException
+     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
      */
     public function getNewDateQuestion(): NumbersApiQuestionAbstract
     {
@@ -80,7 +80,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaApiParseException|TriviaApiWrongTypeException
+     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
      */
     public function getNewYearQuestion(): NumbersApiQuestionAbstract
     {
@@ -90,8 +90,8 @@ class NumbersApiClient
     /**
      * @param array|null $allowedTypes
      * @return NumbersApiQuestionAbstract
-     * @throws TriviaApiParseException
-     * @throws TriviaApiWrongTypeException
+     * @throws TriviaGameApiParseException
+     * @throws TriviaGameApiWrongTypeException
      */
     public function getNewRandomTypeQuestion(?array $allowedTypes = null): NumbersApiQuestionAbstract
     {

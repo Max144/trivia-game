@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Exceptions\TriviaApiParseException;
-use App\Exceptions\TriviaApiWrongTypeException;
+use App\Exceptions\TriviaGameApiParseException;
+use App\Exceptions\TriviaGameApiWrongTypeException;
 use App\Services\API\NumbersApi\NumbersApiClient;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\DateNumbersApiQuestion;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\MathNumbersApiQuestion;
@@ -127,7 +127,7 @@ class NumbersApiClientTest extends TestCase
         $answer = $this->faker->randomNumber();
 
         $numbersApiClient->setNumbersApiResponse(new NumbersApiResponseFake($questionText, $answer, false));
-        $this->expectException(TriviaApiParseException::class);
+        $this->expectException(TriviaGameApiParseException::class);
         $numbersApiClient->getNewRandomTypeQuestion();
     }
 }

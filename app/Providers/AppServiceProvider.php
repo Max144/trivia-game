@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\TriviaGameGeneration\WrongAnswersGenerators\DateTypeWrongAnswerGenerator;
+use App\Services\TriviaGameGeneration\WrongAnswersGenerators\NumberTypeWrongAnswerGenerator;
+use App\Services\TriviaGameGeneration\WrongAnswersGenerators\YearTypeWrongAnswerGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton(DateTypeWrongAnswerGenerator::class, fn() => new DateTypeWrongAnswerGenerator());
+        $this->app->singleton(NumberTypeWrongAnswerGenerator::class, fn() => new NumberTypeWrongAnswerGenerator());
+        $this->app->singleton(YearTypeWrongAnswerGenerator::class, fn() => new YearTypeWrongAnswerGenerator());
     }
 }

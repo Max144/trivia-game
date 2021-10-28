@@ -6,4 +6,7 @@ namespace App\Services\API\NumbersApi\NumbersApiQuestionTypes;
 
 class TriviaNumbersApiQuestion extends NumbersApiQuestionAbstract
 {
+    /**
+     * @var float $answer
+     */
 }
