@@ -80,9 +80,11 @@ class TriviaGameController extends Controller
                     'currentQuestion',
                     'wrongAnsweredQuestion.userAnswer',
                     'wrongAnsweredQuestion.rightAnswer',
-                    'questions'
+                    'answeredQuestions.userAnswer',
+                    'answeredQuestions.rightAnswer',
                 ]
             )
+            ->withCount(['questions', 'answeredQuestions'])
             ->find($id);
         return new TriviaGameResource($game);
     }

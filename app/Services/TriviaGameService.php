@@ -26,20 +26,23 @@ class TriviaGameService
         }
 
         $answer->question->update(['user_answer_id' => $answer->id]);
-        $this->changeGameStatusAfterQuestion($answer->question);
+        $isAnswerRight = $answer->question->right_answer_id === $answer->id;
+        $this->changeGameStatusAfterQuestion($answer->question, $isAnswerRight);
 
-        return $answer->question->right_answer_id === $answer->id;
+        return $isAnswerRight;
     }
 
-    protected function changeGameStatusAfterQuestion(Question $question)
+    protected function changeGameStatusAfterQuestion(Question $question, bool $isAnswerRight)
     {
-        if (isset($question->triviaGame->wrongAnsweredQuestion)) {
+        if (!$isAnswerRight) {
             $question->triviaGame->is_finished = true;
             $question->triviaGame->is_won = false;
             $question->triviaGame->save();
+
+            return;
         }
 
-        if (!isset($question->triviaGame->currentQuestion)) {
+        if (empty($question->triviaGame->currentQuestion()->first())) {
             $question->triviaGame->is_finished = true;
             $question->triviaGame->is_won = true;
             $question->triviaGame->save();

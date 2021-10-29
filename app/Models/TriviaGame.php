@@ -30,6 +30,13 @@ class TriviaGame extends Model
         return $this->hasMany(Question::class)->orderBy('order_number');
     }
 
+    public function answeredQuestions(): HasMany
+    {
+        return $this->hasMany(Question::class)
+            ->whereNotNull('user_answer_id')
+            ->orderBy('order_number');
+    }
+
     public function currentQuestion(): HasOne
     {
         return $this->hasOne(Question::class)

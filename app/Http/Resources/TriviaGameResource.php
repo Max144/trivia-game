@@ -13,9 +13,20 @@ class TriviaGameResource extends JsonResource
             'is_finished' => $this->is_finished,
             'is_won' => $this->is_won,
             'created_at' => $this->created_at,
-            'currentQuestion' => new QuestionResource($this->whenLoaded('currentQuestion')),
+            'currentQuestion' => $this->when(
+                !$this->is_finished,
+                new QuestionResource($this->whenLoaded('currentQuestion'))
+            ),
             'wrongAnsweredQuestion' => new QuestionResource($this->whenLoaded('wrongAnsweredQuestion')),
-            'questions' => QuestionResource::collection($this->whenLoaded('questions')),
+            'answeredQuestions' => QuestionResource::collection($this->whenLoaded('answeredQuestions')),
+            'questions_count' => $this->when(
+                isset($this->questions_count),
+                $this->questions_count
+            ),
+            'answered_questions_count' => $this->when(
+                isset($this->answered_questions_count),
+                $this->answered_questions_count
+            ),
         ];
     }
 }
