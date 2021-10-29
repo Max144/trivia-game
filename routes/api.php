@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\TriviaGameController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('trivia-game/create', [TriviaGameController::class, 'create']);
+Route::get('trivia-game/{id}', [TriviaGameController::class, 'get']);
+Route::post('trivia-game/submit-answer/{answer}', [TriviaGameController::class, 'submitAnswer']);

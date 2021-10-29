@@ -1,0 +1,95 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "trivia game",
+        "description": "trivia game api documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/trivia-game/create": {
+            "get": {
+                "tags": [
+                    "TriviaGameController"
+                ],
+                "summary": "Create trivia game instance",
+                "description": "creating instance of trivia game with questions",
+                "operationId": "trivia-game.create",
+                "responses": {
+                    "200": {
+                        "description": "trivia game instance is returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trivia-game/{id}": {
+            "get": {
+                "tags": [
+                    "TriviaGameController"
+                ],
+                "summary": "Show trivia game instance",
+                "description": "get instance of trivia game",
+                "operationId": "trivia-game.show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Trivia game id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "trivia game instance is returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trivia-game/submit-answer/{id}": {
+            "post": {
+                "tags": [
+                    "TriviaGameController"
+                ],
+                "summary": "Show trivia game instance",
+                "description": "submit trivia answer",
+                "operationId": "trivia-game.submit-answer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "answer id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "true/false is returned if answer rigth/wrong",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

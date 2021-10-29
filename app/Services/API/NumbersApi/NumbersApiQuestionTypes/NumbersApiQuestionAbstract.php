@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\API\NumbersApi\NumbersApiQuestionTypes;
 
-use App\Exceptions\TriviaGameApiParseException;
+use App\Exceptions\TriviaGameNotCurrentQuestionException;
 use App\Services\TriviaGameGeneration\WrongAnswersGenerators\NumberTypeWrongAnswerGenerator;
 use App\Services\TriviaGameGeneration\WrongAnswersGenerators\WrongAnswerGeneratorAbstract;
 
@@ -23,12 +23,12 @@ abstract class NumbersApiQuestionAbstract
 
     /**
      * @param object $response
-     * @throws TriviaGameApiParseException
+     * @throws TriviaGameNotCurrentQuestionException
      */
     public function __construct(object $response)
     {
         if (!$response->found) {
-            throw new TriviaGameApiParseException();
+            throw new TriviaGameNotCurrentQuestionException();
         }
         $this->setQuestionAndAnswerFromResponse($response);
     }

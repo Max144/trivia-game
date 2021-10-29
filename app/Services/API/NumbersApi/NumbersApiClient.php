@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\API\NumbersApi;
 
-use App\Exceptions\TriviaGameApiParseException;
+use App\Exceptions\TriviaGameNotCurrentQuestionException;
 use App\Exceptions\TriviaGameApiWrongTypeException;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\DateNumbersApiQuestion;
 use App\Services\API\NumbersApi\NumbersApiQuestionTypes\MathNumbersApiQuestion;
@@ -45,7 +45,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
      */
     public function getNewQuestion(string $type)
     {
@@ -56,7 +56,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
      */
     public function getNewTriviaQuestion(): NumbersApiQuestionAbstract
     {
@@ -64,7 +64,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
      */
     public function getNewMathQuestion(): NumbersApiQuestionAbstract
     {
@@ -72,7 +72,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
      */
     public function getNewDateQuestion(): NumbersApiQuestionAbstract
     {
@@ -80,7 +80,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameApiParseException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
      */
     public function getNewYearQuestion(): NumbersApiQuestionAbstract
     {
@@ -90,7 +90,7 @@ class NumbersApiClient
     /**
      * @param array|null $allowedTypes
      * @return NumbersApiQuestionAbstract
-     * @throws TriviaGameApiParseException
+     * @throws TriviaGameNotCurrentQuestionException
      * @throws TriviaGameApiWrongTypeException
      */
     public function getNewRandomTypeQuestion(?array $allowedTypes = null): NumbersApiQuestionAbstract
