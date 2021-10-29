@@ -45,7 +45,6 @@
             axios
                 .post('/api/trivia-game/create')
                 .then(response => {
-                    console.log(response);
                     this.trivia_id = response.data.data.id;
                     localStorage.setItem('trivia_id', response.data.data.id);
                 }).finally(() => this.gameLoading = false);

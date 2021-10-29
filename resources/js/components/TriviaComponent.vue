@@ -17,9 +17,9 @@
         </div>
 
         <div v-if="triviaData.currentQuestion">
-            <question :question="triviaData.currentQuestion" @questionSubmitted="loadGame"></question>
+            <question :question="triviaData.currentQuestion" @questionSubmitted="loadGame" :key="triviaData.currentQuestion.id"></question>
         </div>
-        <question v-for="question in triviaData.answeredQuestions.reverse()" :key="id" :question="question"></question>
+        <question v-for="question in reversedAnsweredQuestionsArray" :key="question.id" :question="question"></question>
     </div>
 </template>
 
@@ -43,7 +43,14 @@
                         this.triviaData = response.data.data;
                         this.dataLoaded = true;
                     })
+            },
+        },
+        computed: {
+            reversedAnsweredQuestionsArray: function () {
+                let array = [...this.triviaData.answeredQuestions];
+                return array.reverse()
             }
         }
+
     }
 </script>

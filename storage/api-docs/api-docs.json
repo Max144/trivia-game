@@ -78,7 +78,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "true/false is returned if answer rigth/wrong",
+                        "description": "true/false is returned if answer right/wrong",
                         "content": {
                             "application/json": {
                                 "schema": {}
