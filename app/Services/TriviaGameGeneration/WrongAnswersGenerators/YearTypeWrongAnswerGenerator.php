@@ -13,8 +13,8 @@ class YearTypeWrongAnswerGenerator extends WrongAnswerGeneratorAbstract
     {
         do {
             $year = $this->faker->numberBetween($correctAnswer - 10, $correctAnswer + 10);
-        } while($year === $correctAnswer);
+        } while ($year === $correctAnswer);
 
-        return (string) $year;
+        return (string)$year;
     }
 }

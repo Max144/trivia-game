@@ -13,7 +13,6 @@ class DateTypeWrongAnswerGenerator extends WrongAnswerGeneratorAbstract
      */
     public function generateWrongAnswer($correctAnswer): string
     {
-
         do {
             // get date time +- 10 years from correct
             $newDate = Carbon::parse(

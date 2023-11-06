@@ -25,6 +25,8 @@ class TriviaGame extends Model
 {
     use HasFactory;
 
+    public const QUESTIONS_COUNT = 20;
+
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class)->orderBy('order_number');

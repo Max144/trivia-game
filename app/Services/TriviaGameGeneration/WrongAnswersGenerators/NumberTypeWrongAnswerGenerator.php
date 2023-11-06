@@ -24,6 +24,6 @@ class NumberTypeWrongAnswerGenerator extends WrongAnswerGeneratorAbstract
             );
         } while ($result === $correctAnswerString);
 
-        return (string)$result;
+        return (string) $result;
     }
 }

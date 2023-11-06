@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\TriviaGameGeneration;
 
-use App\Exceptions\TriviaGameNotCurrentQuestionException;
 use App\Exceptions\TriviaGameApiWrongTypeException;
 use App\Models\Question;
 use App\Models\TriviaGame;
@@ -13,92 +12,75 @@ use App\Services\API\NumbersApi\NumbersApiQuestionTypes\NumbersApiQuestionAbstra
 
 class TriviaGameGeneratorService
 {
+    private TriviaGame $triviaGame;
+
+    /**
+     * @return TriviaGame
+     */
+    public function getTriviaGame(): TriviaGame
+    {
+        return $this->triviaGame;
+    }
+
     private NumbersApiClient $numbersApiClient;
 
-    public function __construct(NumbersApiClient $numbersApiClient)
+    public function __construct(?TriviaGame $triviaGame = null)
     {
-        $this->numbersApiClient = $numbersApiClient;
+        $this->numbersApiClient = resolve(NumbersApiClient::class);
+
+        if (empty($triviaGame)) {
+            $triviaGame = TriviaGame::query()->create();
+        }
+
+        $this->triviaGame = $triviaGame;
     }
 
     /**
-     * @param int $questionsCount
-     * @param array|null $questionTypes
-     * @param null $wrongResultsCount
-     * @return TriviaGame
-     * @throws TriviaGameNotCurrentQuestionException
+     * @return ?Question
      * @throws TriviaGameApiWrongTypeException
      */
-    public function generate(
-        int $questionsCount = 20,
-        ?array $questionTypes = null,
-        $wrongResultsCount = null
-    ): TriviaGame {
-        /**
-         * @var TriviaGame $triviaGame
-         */
-        $triviaGame = TriviaGame::create();
+    public function getNextQuestion(): ?Question
+    {
+        if ($this->triviaGame->is_finished) {
+            return null;
+        }
 
-        $questionObjects = $this->getUniqueQuestionsForTrivia($questionsCount, $questionTypes, $wrongResultsCount);
-        $this->generateQuestionsForTrivia($triviaGame, $questionObjects);
+        $currentQuestion = $this->triviaGame->currentQuestion;
+        if (empty($currentQuestion)) {
+            $currentQuestion = $this->generateUniqueQuestionForTrivia();
+        }
 
-        return $triviaGame;
+        return $currentQuestion;
     }
 
     /**
-     * @param int $questionsCount
      * @param array|null $questionTypes
      * @param null $wrongResultsCount
-     * @return NumbersApiQuestionAbstract[]
-     * @throws TriviaGameNotCurrentQuestionException
+     * @return Question
      * @throws TriviaGameApiWrongTypeException
      */
-    public function getUniqueQuestionsForTrivia(
-        int $questionsCount = 20,
-        ?array $questionTypes = null,
-        $wrongResultsCount = null
-    ): array {
-        /**
-         * @var NumbersApiQuestionAbstract[] $questionObjects
-         */
-        $questionObjects = [];
-
+    public function generateUniqueQuestionForTrivia(?array $questionTypes = null, $wrongResultsCount = null): Question
+    {
         do {
             $newQuestion = $this->numbersApiClient->getNewRandomTypeQuestion($questionTypes);
+        } while (
+            $this->triviaGame->questions()
+                ->where('text', $newQuestion->getQuestion())
+                ->exists()
+        );
 
-            foreach ($questionObjects as $storedQuestion) {
-                // if the same question exists - take next
-                if ($newQuestion->getQuestion() === $storedQuestion->getQuestion()) {
-                    continue 2;
-                }
-            }
-
-            $questionObjects[] = $newQuestion;
-            $newQuestion->generateWrongAnswers($wrongResultsCount);
-        } while (count($questionObjects) < $questionsCount);
-
-        return $questionObjects;
-    }
-
-    /**
-     * @param TriviaGame $triviaGame
-     * @param NumbersApiQuestionAbstract[] $questionObjects
-     */
-    protected function generateQuestionsForTrivia(TriviaGame $triviaGame, array $questionObjects)
-    {
-        foreach ($questionObjects as $key => $questionObject) {
-            $this->generateQuestionFromQuestionObject($triviaGame, $questionObject, $key + 1);
-        }
+        $newQuestion->generateWrongAnswers($wrongResultsCount);
+        return $this->generateQuestionFromQuestionObject($newQuestion);
     }
 
     protected function generateQuestionFromQuestionObject(
-        TriviaGame $triviaGame,
-        NumbersApiQuestionAbstract $questionObject,
-        int $questionOrderNumber
-    ) {
-        $question = $triviaGame->questions()->create(
+        NumbersApiQuestionAbstract $questionObject
+    ): Question {
+        $lastQuestionOrderNumber = $this->triviaGame->questions()->max('order_number') ?? 0;
+        $question = $this->triviaGame->questions()->create(
             [
                 'text' => $questionObject->getQuestion(),
-                'order_number' => $questionOrderNumber,
+                'order_number' => $lastQuestionOrderNumber + 1,
             ]
         );
 
@@ -110,5 +92,7 @@ class TriviaGameGeneratorService
         $question->update(
             ['right_answer_id' => $answersModels->where('text', $questionObject->getAnswerString())->first()->id]
         );
+
+        return $question;
     }
 }

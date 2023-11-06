@@ -9,7 +9,7 @@
                 </div>
                 <div >
                     <h3 class="text-center" v-if="!triviaData.is_finished">
-                      Question {{triviaData.answered_questions_count}} / {{triviaData.questions_count}}
+                      Question {{triviaData.answered_questions_count + 1}} / {{triviaData.questions_count}}
                     </h3>
                 </div>
             </div>

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Http;
 
 class NumbersApiClient
 {
+    public const NUMBERS_API_GET_RANDOM_QUESTION_URL = 'http://numbersapi.com/random/';
+
     public const QUESTION_TYPES = [
         'trivia' => 'trivia',
         'math' => 'math',
@@ -39,13 +41,14 @@ class NumbersApiClient
             throw new TriviaGameApiWrongTypeException();
         }
 
-        $response = Http::get("http://numbersapi.com/random/{$type}?json=1&fragment=1");
+        $url = self::NUMBERS_API_GET_RANDOM_QUESTION_URL . $type . '?json=1&fragment=1';
+        $response = Http::get($url);
 
         return json_decode($response->body());
     }
 
     /**
-     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameApiWrongTypeException
      */
     public function getNewQuestion(string $type)
     {
@@ -56,7 +59,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameApiWrongTypeException
      */
     public function getNewTriviaQuestion(): NumbersApiQuestionAbstract
     {
@@ -64,7 +67,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameApiWrongTypeException
      */
     public function getNewMathQuestion(): NumbersApiQuestionAbstract
     {
@@ -72,7 +75,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameApiWrongTypeException
      */
     public function getNewDateQuestion(): NumbersApiQuestionAbstract
     {
@@ -80,7 +83,7 @@ class NumbersApiClient
     }
 
     /**
-     * @throws TriviaGameNotCurrentQuestionException|TriviaGameApiWrongTypeException
+     * @throws TriviaGameApiWrongTypeException
      */
     public function getNewYearQuestion(): NumbersApiQuestionAbstract
     {
@@ -90,7 +93,6 @@ class NumbersApiClient
     /**
      * @param array|null $allowedTypes
      * @return NumbersApiQuestionAbstract
-     * @throws TriviaGameNotCurrentQuestionException
      * @throws TriviaGameApiWrongTypeException
      */
     public function getNewRandomTypeQuestion(?array $allowedTypes = null): NumbersApiQuestionAbstract

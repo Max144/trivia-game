@@ -8,6 +8,7 @@ use App\Exceptions\TriviaGameIsFinishedException;
 use App\Exceptions\TriviaGameNotCurrentQuestionException;
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\TriviaGame;
 
 class TriviaGameService
 {
@@ -42,7 +43,7 @@ class TriviaGameService
             return;
         }
 
-        if (empty($question->triviaGame->currentQuestion()->first())) {
+        if ($question->triviaGame->questions()->count() >= TriviaGame::QUESTIONS_COUNT) {
             $question->triviaGame->is_finished = true;
             $question->triviaGame->is_won = true;
             $question->triviaGame->save();

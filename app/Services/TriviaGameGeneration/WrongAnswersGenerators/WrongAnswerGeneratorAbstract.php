@@ -30,5 +30,5 @@ abstract class WrongAnswerGeneratorAbstract
         return $answers;
     }
 
-    public abstract function generateWrongAnswer($correctAnswer): string;
+    abstract public function generateWrongAnswer($correctAnswer): string;
 }

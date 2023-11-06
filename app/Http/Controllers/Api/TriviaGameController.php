@@ -17,9 +17,8 @@ class TriviaGameController extends Controller
     private TriviaGameGeneratorService $triviaGameGeneratorService;
     private TriviaGameService $gameService;
 
-    public function __construct(TriviaGameGeneratorService $triviaGameGeneratorService, TriviaGameService $gameService)
+    public function __construct(TriviaGameService $gameService)
     {
-        $this->triviaGameGeneratorService = $triviaGameGeneratorService;
         $this->gameService = $gameService;
     }
 
@@ -27,8 +26,6 @@ class TriviaGameController extends Controller
      * Create trivia game instance
      *
      * @return TriviaGameResource
-     * @throws TriviaGameNotCurrentQuestionException
-     * @throws TriviaGameApiWrongTypeException
      * @OA\Get(
      *     path="/api/trivia-game/create",
      *     operationId="trivia-game.create",
@@ -43,7 +40,9 @@ class TriviaGameController extends Controller
      */
     public function create(): TriviaGameResource
     {
-        return new TriviaGameResource($this->triviaGameGeneratorService->generate());
+        $triviaGameGeneratorService = new TriviaGameGeneratorService();
+
+        return new TriviaGameResource($triviaGameGeneratorService->getTriviaGame());
     }
 
     /**

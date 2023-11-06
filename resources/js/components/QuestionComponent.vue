@@ -9,7 +9,7 @@
             <div class="col-md-4" >
                 <div class="row mt-5">
                     <div class="col-md-6" v-for="answer in question.answers">
-                        <button class="mb-3 btn w-100" v-on:click="submitAnswer(answer.id)"
+                        <button class="mb-3 btn w-100 border" v-on:click="submitAnswer(answer.id)"
                                 v-bind:class="getAnswerButtonClass(answer)">{{answer.text}}</button>
                     </div>
                 </div>

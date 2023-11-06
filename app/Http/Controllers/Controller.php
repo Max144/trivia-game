@@ -16,5 +16,7 @@ class Controller extends BaseController
      *      description="trivia game api documentation",
      * )
      */
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 }
